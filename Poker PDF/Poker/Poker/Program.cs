@@ -20,7 +20,7 @@ namespace Poker
         // Pour utiliser la fonction C 'getchar()' : sasie d'un caractère
         [DllImport("msvcrt")]
         static extern int _getche();
-
+		
         //-------------------
         // TYPES DE DONNEES
         //-------------------
@@ -68,7 +68,12 @@ namespace Poker
         // Retourne une expression de type "structure carte"
         public static carte tirage()
         {
-            
+        	Random rnd = new Random();
+        	carte N_carte = new carte();
+        	N_carte.valeur =  valeurs[rnd.Next(0,12)];
+        	N_carte.famille =  familles[rnd.Next(0,3)];
+        	
+        	return N_carte;
         }
 
         // Indique si une carte est déjà présente dans le jeu
@@ -76,7 +81,16 @@ namespace Poker
         // Retourne un entier (booléen)
         public static bool carteUnique(carte uneCarte, carte[] unJeu, int numero)
         {
-
+        	bool returntype = true;
+        	for(int i = 0;i<unJeu.Length;i++)
+        	{
+        		if(uneCarte.valeur.Equals(unJeu[i].valeur)&&(uneCarte.famille.Equals(unJeu[i].famille)))
+        		{
+        			returntype = false;
+        		}
+        	}
+        	if(returntype){return true;}
+        	else{return false;}
         }
 
         // Calcule et retourne la COMBINAISON (paire, double-paire... , quinte-flush)
@@ -84,7 +98,69 @@ namespace Poker
         // La valeur retournée est un élement de l'énumération 'combinaison' (=constante)
         public static combinaison chercheCombinaison(carte[] unJeu)
         {
+        	int[] similaire = {0,0,0,0,0};
+        	int c = 0;
+        	int c_quint = 0;
+        	
+        	bool DoublePaire = false;
+        	bool Brelan = false;
+        	bool Carre = false;
+        	bool SetupQuint = false;
 
+        	char [,] quintes = {{'X','V','D','R','A'},
+								{'9','X','V','D','R'},
+								{'8','9','X','V','D'},
+								{'7','8','9','X','V'}
+								};
+        	
+        	//Paire check
+        	for(int i=0;i<unJeu.Length;i++)
+        	{
+        		for(int j=0;j<unJeu.Length;j++)
+	        	{
+        			if(unJeu[i].Equals(unJeu[j]))
+        			{
+        				similaire[i]++;
+        				c++;
+        				//Double paire check
+        				if(c%2==0)
+        				{
+        					DoublePaire = true;
+        				}
+        			}
+	        	}
+        	}
+        	//Brelan, Carre and Quint setup check
+        	foreach(var value in similaire)
+        	{
+        		if(value==3)
+        		{
+        			Brelan = true;
+        		}
+        		else if(value==4){
+        			Carre = true;
+        		}
+        		if(value>1){
+        			SetupQuint=false;
+        		}
+        	}
+        	//Quinte Check
+
+        	if(SetupQuint)
+        	{
+        		for(int i=0;i<quintes.GetLength(0);i++)
+        		{
+        			c_quint=0;
+        			for(int j=0;j<quintes.GetLength(1);j++)
+	        		{
+        				if(quintes[i,j].Equals(unJeu[j]))
+        				{
+        					c_quint++;
+        				}
+	        		}
+        		}
+        	}
+        	
         }
 
         // Echange des cartes

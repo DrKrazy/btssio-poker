@@ -3,3 +3,5 @@ C:\Users\Stoorms\Documents\SharpDevelop Projects\Poker\Poker\bin\Debug\Poker.pdb
 C:\Users\Stoorms\Documents\SharpDevelop Projects\Poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
 C:\Users\Stoorms\Documents\SharpDevelop Projects\Poker\Poker\obj\Debug\Poker.exe
 C:\Users\Stoorms\Documents\SharpDevelop Projects\Poker\Poker\obj\Debug\Poker.pdb
+U:\Espace privé\Github\btssio-poker\Poker PDF\Poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
+U:\Espace privé\Github\btssio-poker\Poker PDF\Poker\Poker\obj\Debug\Poker.exe
