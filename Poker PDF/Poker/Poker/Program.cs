@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace Poker
 {
@@ -99,15 +100,18 @@ namespace Poker
         // La valeur retournée est un élement de l'énumération 'combinaison' (=constante)
         public static combinaison chercheCombinaison(ref carte[] unJeu)
         {
-        	int[] similaire = {0,0,0,0,0};
-        	
-        	bool paire = false;
-        	bool brelan = false;
-        	bool carre = false;
-        	bool p_quint = true;
-        	bool couleur = false;
-        	
-        	char[,] quint = {
+        	int[] similaire = {0,0,0,0,0};  // Tableau similaire
+            int c_paire = 0;                // Compteur de paire
+
+        	bool paire = false;             // S’il existe un élément du tableau « similaire » égal à 2, on a une paire.
+            bool doublepaire = false;       // Chaque fois que l’on a une paire on incrémente un compteur.  |  Si ce compteur /2 = 2 alors on a une double paire…
+            bool brelan = false;            // Il existe un élément du tableau « similaire » égal à 3.
+            bool carre = false;             // Il existe un élément du tableau « similaire » égal à 4.
+            bool sim_1 = true;              // Si tout les élément du tableau 'similaire' sont tous à 1.
+            bool b_quint = false;           // Si c'est une quinte
+        	bool couleur = true;            // Les 5 cartes doivent être de la MEME FAILLE, mais sans constituer une QUNTE…
+
+            char[,] quint = {
         						{'X','V','D','R','A'},
         						{'9','X','V','D','4'},
         						{'8','9','X','V','D'},
@@ -131,11 +135,12 @@ namespace Poker
         	{
         		if(num!=1)
         		{
-        			p_quint=false;
+        			sim_1=false;
         		}
         		if(num==2)
         		{
         			paire=true;
+                    c_paire++;
         		}
         		if(num==3)
         		{
@@ -146,18 +151,81 @@ namespace Poker
         			carre=true;
         		}
         	}
+
+            // Double Paire Check
+            if(c_paire/2==2)
+            {
+                doublepaire = true;
+            }
+
+            // Couleur Check
+            foreach(carte c2 in MonJeu)
+            {
+                if (MonJeu[0].famille!=c2.famille)
+                {
+                    couleur = false;
+                }
+            }
+
+            //Quint Check
+            for(int c_quint=0; c_quint<quint.GetLength(0);c_quint++)
+            {
+                if (MonJeu[0].valeur == quint[c_quint,0] && MonJeu[1].valeur == quint[c_quint,1] && MonJeu[2].valeur == quint[c_quint,2] && MonJeu[3].valeur == quint[c_quint,3] && MonJeu[4].valeur == quint[c_quint,4])
+                {
+                    b_quint = true;
+                }
+            }
+
         	// DEBUG
         	SetConsoleTextAttribute(hConsole, 10);
         	Console.WriteLine("\n\n\nDEBUG:");
         	Console.WriteLine("similaire = {"+string.Join(", ", similaire)+"}");
         	Console.WriteLine("paire = "+paire);
-        	Console.WriteLine("brelan = "+brelan);
+        	Console.WriteLine("doublepaire = " + doublepaire);
+            Console.WriteLine("brelan = "+brelan);
         	Console.WriteLine("carre = "+carre);
-        	Console.WriteLine("quint = "+p_quint);
-			Console.WriteLine("\n\n\n");
+        	Console.WriteLine("quint = "+sim_1);
+        	Console.WriteLine("couleur = "+couleur);
+        	Console.WriteLine("famille = "+ MonJeu[0].famille);
+            Console.WriteLine("\n\n\n");
         	SetConsoleTextAttribute(hConsole, 12);
-        	                  
-        	return combinaison.RIEN;
+
+        	if(couleur && !sim_1)
+            {
+                return combinaison.COULEUR;
+            }
+            else if(paire && brelan)
+            {
+                return combinaison.FULL;
+            }
+            else if(couleur && sim_1)
+            {
+                return combinaison.QUINTE_FLUSH;
+            }
+            else if(b_quint && sim_1)
+            {
+                return combinaison.QUINTE;
+            }
+            else if(brelan)
+            {
+                return combinaison.BRELAN;
+            }
+            else if(carre)
+            {
+                return combinaison.CARRE;
+            }
+            else if(doublepaire)
+            {
+                return combinaison.DOUBLE_PAIRE;
+            }
+            else if(paire)
+            {
+                return combinaison.PAIRE;
+            }
+            else
+            {
+                return combinaison.RIEN;
+            }
         }
 
         // Echange des cartes
@@ -222,13 +290,13 @@ namespace Poker
             //----------------------------
             // TIRAGE D'UN JEU DE 5 CARTES
             //----------------------------
-            int left = (Console.WindowWidth/2)-(MonJeu.Length)/2;
+            int left = 10;
             int H_offset = 2; //Height offset
             int c = 1;
             // Tirage aléatoire de 5 cartes
             for (int i = 0; i < 5; i++)
             {
-                // Tirage de la carte n°i (le jeu doit être sans doublons !)
+                // Tirage de la carte n°c_quint (le jeu doit être sans doublons !)
 
                 // Affichage de la carte
                 if (MonJeu[i].famille == 9829 || MonJeu[i].famille == 9830)
@@ -263,7 +331,8 @@ namespace Poker
                 left = left + 15;
                 c++;
             }
-            afficheResultat(MonJeu);
+            SetConsoleTextAttribute(hConsole, 15);
+            Console.Write("\n\nNombre de cartes à échanger (0-4)?: ");
         }
 
         // Enregistre le score dans le txt
@@ -347,6 +416,7 @@ namespace Poker
 	                    break;
             	}
             }
+
             Console.Clear();
         }
     }

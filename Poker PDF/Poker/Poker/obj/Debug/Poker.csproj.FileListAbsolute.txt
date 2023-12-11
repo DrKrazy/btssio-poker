@@ -5,8 +5,10 @@ C:\Users\Stoorms\Documents\SharpDevelop Projects\Poker\Poker\obj\Debug\Poker.exe
 C:\Users\Stoorms\Documents\SharpDevelop Projects\Poker\Poker\obj\Debug\Poker.pdb
 U:\Espace privé\Github\btssio-poker\Poker PDF\Poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
 U:\Espace privé\Github\btssio-poker\Poker PDF\Poker\Poker\obj\Debug\Poker.exe
-D:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
 D:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\obj\Debug\Poker.exe
 D:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\bin\Debug\Poker.exe
 D:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\bin\Debug\Poker.pdb
 D:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\obj\Debug\Poker.pdb
+D:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\bin\Debug\Poker.exe.config
+D:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\obj\Debug\Poker.csproj.AssemblyReference.cache
+D:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\obj\Debug\Poker.csproj.CoreCompileInputs.cache
