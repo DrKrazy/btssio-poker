@@ -12,3 +12,10 @@ D:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\obj\Debug\Poker.pdb
 D:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\bin\Debug\Poker.exe.config
 D:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\obj\Debug\Poker.csproj.AssemblyReference.cache
 D:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\obj\Debug\Poker.csproj.CoreCompileInputs.cache
+E:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\bin\Debug\Poker.exe.config
+E:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\bin\Debug\Poker.exe
+E:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\bin\Debug\Poker.pdb
+E:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\obj\Debug\Poker.csproj.AssemblyReference.cache
+E:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\obj\Debug\Poker.csproj.CoreCompileInputs.cache
+E:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\obj\Debug\Poker.exe
+E:\LYCEE\Github\btssio-poker\Poker PDF\Poker\Poker\obj\Debug\Poker.pdb
