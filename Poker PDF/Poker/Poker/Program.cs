@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Poker
 {
@@ -105,8 +106,8 @@ namespace Poker
             int[] similaire = { 0, 0, 0, 0, 0 };  // Tableau similaire
             int c_paire = 0;                // Compteur de paire
 
-            bool paire = false;             // S’il existe un élément du tableau « similaire » égal à 2, on a une paire.
-            bool doublepaire = false;       // Chaque fois que l’on a une paire on incrémente un compteur.  |  Si ce compteur /2 = 2 alors on a une double paire…
+            bool paire = false;             // S’il existe un élément du tableau « similaire » égal à 2, on a_r une paire.
+            bool doublepaire = false;       // Chaque fois que l’on a_r une paire on incrémente un compteur.  |  Si ce compteur /2 = 2 alors on a_r une double paire…
             bool brelan = false;            // Il existe un élément du tableau « similaire » égal à 3.
             bool carre = false;             // Il existe un élément du tableau « similaire » égal à 4.
             bool sim_1 = true;              // Si tout les élément du tableau 'similaire' sont tous à 1.
@@ -270,9 +271,111 @@ namespace Poker
         		Console.WriteLine(menu[m]);
         	}
         }
+        //
+        // Encryption & Decryption
+        //
+        private static string StringEncrypt(string input, int offset, bool NtoL)
+        {
+            if (string.IsNullOrEmpty(input))
+                return null;
 
-        // Jouer au Poker
-		// Ici que vous appellez toutes les fonction permettant de joueur au poker
+            string a = "abcdefghijklmnopqrstuvwxyz";
+            string A = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            string symbols = "?,.;:!{}[]";
+            string result = "";
+            for(int i=0;i<input.Length;i++)
+            {
+                if(symbols.Contains(input[i]))
+                {
+                    result += input[i];
+                }
+                else
+                {
+                    if (int.TryParse(input[i].ToString(), out int temp))
+                    {
+                        if(NtoL)
+                        {
+                            result += a[temp];
+                        }
+                        else
+                        {
+                            result += temp;
+                        }
+                    }
+                    else
+                    {
+                        if (char.IsUpper(input[i]))
+                        {
+                            result += A[(A.IndexOf(input[i]) + offset) % 26];
+                            
+                        }
+                        else
+                        {
+                            result += a[(a.IndexOf(input[i]) + offset) % 26];
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+        private static string StringDecrypt(string input, int offset)
+        {
+            if (string.IsNullOrEmpty(input))
+                return null;
+
+            string a = "abcdefghijklmnopqrstuvwxyz";
+            string a_r = "zyxwvutsrqponmlkjihgfedcba";
+            string A_r = "ZYXWVUTSRQPONMLKJIHGFEDCBA";
+            string symbols = "?,.:!{}[]";
+            string result = "";
+            int c_d = 0;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (symbols.Contains(input[i]))
+                {
+                    result += input[i];
+                }
+                else if (input[i]==';')
+                {
+                    c_d++;
+                    result += input[i];
+                }
+                else
+                {
+                    switch (c_d)
+                    {
+                        case 0:
+                            if (char.IsUpper(input[i]))
+                            {
+                                result += A_r[(A_r.IndexOf(input[i]) + offset) % 26];
+                            }
+                            else
+                            {
+                                result += a_r[(a_r.IndexOf(input[i]) + offset) % 26];
+                            }
+                            break;
+                        case 1:
+                            result += a.IndexOf(input[i]);
+                            break;
+                        case 2:
+                            if (char.IsUpper(input[i]))
+                            {
+                                result += A_r[(A_r.IndexOf(input[i]) + offset) % 26];
+                            }
+                            else
+                            {
+                                result += a.IndexOf(input[i]);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            return result;
+        }
+        //Jouer au Poker
+        // Ici que vous appellez toutes les fonction permettant de joueur au poker
         private static void jouerAuPoker()
         {	
         	Console.Clear();
@@ -324,7 +427,8 @@ namespace Poker
                 }
             }
             char reponse_save;
-            string nom, ligne;
+            string nom, ligne, date;
+            string jeu = "";
             char delimiteurs = ';';
             while (true)
             {
@@ -333,10 +437,18 @@ namespace Poker
                 reponse_save = (char)_getche();
                 if (reponse_save == 'O' || reponse_save == 'o')
                 {
+                    date = DateTime.Now.ToString("ddmmyyyy");
                     BinaryWriter f; // Variable FICHIER
                     f = new BinaryWriter(new FileStream("scores.txt", FileMode.Append, FileAccess.Write));
-                    Console.Write("Vous pouvez saisir votre nom (ou pseudo): ")
+                    Console.Write("\nVous pouvez saisir votre nom (ou pseudo): ");
                     nom = Console.ReadLine();
+                    for(int i = 0; i < MonJeu.Length;i++)
+                    {
+                        jeu += "[" + MonJeu[i].valeur + "," + MonJeu[i].famille + "]";
+                    }
+                    ligne = nom + delimiteurs + date + delimiteurs + "{" + jeu + "}" + delimiteurs;
+                    f.Write(StringEncrypt(ligne, nom.Length, true));
+                    f.Close();
                     break;
                 }
                 else if (reponse_save == 'N' || reponse_save == 'n')
@@ -422,7 +534,9 @@ namespace Poker
         // Affiche le Scores
         private static void voirScores()
         {
-           
+            BinaryReader f;
+            f = new BinaryReader(new FileStream("scores.txt", FileMode.Open, FileAccess.Read));
+            Console.WriteLine(f.ReadString());
         }
 
         // Affiche résultat
